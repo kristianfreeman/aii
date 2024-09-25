@@ -1,6 +1,6 @@
 `ai generated README, this library is not ready to use yet`
 
-![](https://github.com/kristianfreeman/llmp/.github/warning.jpg)
+![](https://cdn.githubraw.com/kristianfreeman/llmp/8bb11ee3d0b077162764527928cf65c195a4b00b/.github/warning.jpg)
 
 # llmp - Large Language Model+
 
