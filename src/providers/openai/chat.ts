@@ -36,7 +36,7 @@ class OpenAIChat extends Chat {
     this.model = model;
     this.openai = createOpenAI({
       apiKey: openaiApiKey,
-      ...(gatewayUrl ? { basePath: gatewayUrl } : {})
+      ...(gatewayUrl ? { baseURL: gatewayUrl } : {})
     });
     this.userId = userId;
   }
