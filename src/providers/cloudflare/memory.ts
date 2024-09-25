@@ -2,13 +2,24 @@ import { D1Database } from "@cloudflare/workers-types";
 
 import { MessageRole, DatabaseMessage } from "@/types";
 import Logger from "@/interfaces/logger";
-import Memory from "@/interfaces/messages";
+import Memory from "@/interfaces/memory";
 
 class CloudflareMemory extends Memory {
   private db: D1Database;
 
-  constructor(db: D1Database, userId: string, logger: Logger) {
-    super(userId, logger);
+  constructor(
+    {
+      db,
+      logger,
+      messageLimit,
+      userId,
+    }: {
+      db: D1Database,
+      logger: Logger,
+      messageLimit?: number,
+      userId: string,
+    }) {
+    super({ logger, messageLimit, userId });
     this.db = db;
     this.checkTableExists();
   }

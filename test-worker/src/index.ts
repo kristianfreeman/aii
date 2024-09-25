@@ -38,11 +38,11 @@ export default {
 			userId,
 		})
 
-		const memory = new CloudflareMemory(
-			env.D1_DATABASE,
-			userId,
+		const memory = new CloudflareMemory({
+			db: env.D1_DATABASE,
 			logger,
-		)
+			userId,
+		})
 
 		const embeddings = new CloudflareEmbeddings(
 			env.AI,

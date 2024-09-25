@@ -4,7 +4,7 @@ import Chat from '@/interfaces/chat';
 import Embeddings from '@/interfaces/embeddings';
 import Facts from '@/interfaces/facts';
 import Logger from '@/interfaces/logger';
-import Memory from '@/interfaces/messages';
+import Memory from '@/interfaces/memory';
 import RAG from '@/interfaces/rag';
 
 class LLMP {
@@ -65,9 +65,9 @@ class LLMP {
     this.logger.debug('Stored user message embedding', { messageId: userMessageId });
 
     // Get previous messages for context
-    const previousMessages = await this.memory.getPreviousMessages(10);
+    const previousMessages = await this.memory.getPreviousMessages(this.memory.messageLimit);
     this.logger.debug('Retrieved previous messages for context', { count: previousMessages.length });
-    const context = previousMessages.join('\n');
+    const context = previousMessages
 
     // Retrieve relevant texts using RAG
     const relevantTexts = await this.rag.retrieveRelevantTexts(
@@ -75,17 +75,19 @@ class LLMP {
       5
     );
     this.logger.debug('Retrieved relevant texts using RAG', { count: relevantTexts.length });
-    const relevantContext = relevantTexts.join('\n');
+    const relevantContext = relevantTexts
 
     // Get facts
     const factsArray = await this.facts.getFacts();
     this.logger.debug('Retrieved facts', { count: factsArray.length });
     const facts = factsArray.join('\n');
 
+    const fullContext = new Set([...context, ...relevantContext])
+
     // Generate AI response
     const aiResponse = await this.chat.generateResponse(
       query,
-      context + '\n' + relevantContext,
+      Array.from(fullContext).join('\n'),
       userPreferences || "",
       facts
     );

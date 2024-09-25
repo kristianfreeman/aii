@@ -2,12 +2,22 @@ import { MessageRole, DatabaseMessage } from "@/types";
 import Logger from "@/interfaces/logger";
 
 abstract class Memory {
-  protected userId: string;
   protected logger: Logger;
+  messageLimit: number;
+  protected userId: string;
 
-  constructor(userId: string, logger: Logger) {
-    this.userId = userId;
+  constructor({
+    logger,
+    messageLimit = 10,
+    userId,
+  }: {
+    messageLimit?: number,
+    logger: Logger
+    userId: string,
+  }) {
     this.logger = logger;
+    this.messageLimit = messageLimit;
+    this.userId = userId;
   }
 
   abstract getPreviousMessages(limit: number): Promise<string[]>;
